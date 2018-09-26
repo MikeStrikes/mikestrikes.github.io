@@ -6,6 +6,9 @@ $FlightTime;
 $picked;
 $flightHelper;
 
+for ($x=0; $x <=10 ; $x++) {
+
+}
   function MatchCity($departure,$airports){
 
     for($x = 0;$x<= count($airports) - 1;$x++){
@@ -156,9 +159,8 @@ $flightHelper;
     <?php
     //diffrence + time zone diffrence
 
-
     ?>
-    <center><h1>Available Flights from <?php echo MatchCity($_GET['departure'],$airports); ?> to <?php echo MatchCity($_GET['destination'],$airports); ?></h1></center>
+    <h1>Available Flights</h1>
     <form class="" method="POST">
 
 
@@ -249,14 +251,8 @@ $flightHelper;
             <div class="custom">
               <h3 style="float:right;">Total Duration</h3>
               <h4><?php echo $_POST[$flightHelper]; ?></h4>
-<form class=""  method="post" action="<?php if(isset($_GET['trip']) && $_GET['trip'] == "one-way"){echo "oneway-flight";}else{ echo "return_flight";} ?>.php?departure=<?php echo $_GET['destination']; ?>&destination=<?php echo $_GET['departure']; ?>&departure_date=<?php echo $_GET['return_date']; ?>">
-
-  <input type="submit" name="submit2" value="Book">
-  <input type="hidden" name="departure_date" value="<?php echo $_GET['return_date']; ?>">
-  <input type="hidden" name="return_date" value="<?php echo $_GET['departure_date']; ?>">
-  <input type="hidden" name="departure" value="<?php echo $_GET['destination']; ?>">
-  <input type="hidden" name="destination" value="<?php echo $_GET['departure']; ?>">
-
+<form class=""  method="post" action = "bothflights.php">
+  <input type="submit" name="LastBooked" value="Book">
 </form>
             </div>
 
@@ -294,26 +290,20 @@ echo $flights[$picked]['number'];
     <?php
 
     if(isset($_POST['submit']) && isset($_POST['send'])){
-      session_unset();
-      $_SESSION['fly_time_1'] = $_POST[$flightHelper];
-      $_SESSION['departure_location'] = $_GET['departure'];
-      $_SESSION['destination'] = $_GET['destination'];
-      $_SESSION['departure_city'] = MatchCity($flights[$picked]['departure_airport'],$airports);
-      $_SESSION['arrival_city'] = MatchCity($flights[$picked]['arrival_airport'],$airports);
-      $_SESSION['departure_date'] = $_GET['departure_date'];
-      $_SESSION['return_date'] = $_GET['return_date'];
-      $_SESSION['price_1'] = $flights[$picked]['price'];
-      $_SESSION['airline_1'] = $flights[$picked]['airline'];
-      $_SESSION['number_1'] = $flights[$picked]['number'];
-      $_SESSION['departure_time_1'] = $flights[$picked]['departure_time'];
-      $_SESSION['arrival_time_1'] = $flights[$picked]['arrival_time'];
+
+      $_SESSION['fly_time_2'] = $_POST[$flightHelper];
 
 
+      $_SESSION['price_2'] = $flights[$picked]['price'];
+      $_SESSION['airline_2'] = $flights[$picked]['airline'];
+      $_SESSION['number_2'] = $flights[$picked]['number'];
+      $_SESSION['departure_time_2'] = $flights[$picked]['departure_time'];
+      $_SESSION['arrival_time_2'] = $flights[$picked]['arrival_time'];
 
       ?>
       <script type="text/javascript"> $('#confirm_flight').modal('show'); </script>
       <?php
-      $_POST = array();
+
     }
 
     if(isset($_POST['submit2'])){
