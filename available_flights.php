@@ -5,7 +5,7 @@ session_start();
 $goingthrough = false;
 $picked;
 $flightHelper;
-var_dump($_SESSION);
+
 
 
   ?>

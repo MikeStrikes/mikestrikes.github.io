@@ -195,7 +195,7 @@ echo $flights[$picked]['number'];
 
       </div>
     </div>
-    <?php echo $timezone; ?>
+
     <?php
 
     if(isset($_POST['submit']) && isset($_POST['send'])){
