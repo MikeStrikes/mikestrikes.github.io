@@ -32,6 +32,38 @@ window.location.replace("index.php");
   </script>
 </head>
 <style media="screen">
+.confirmation_box{
+
+  margin: auto;
+}
+.inside-left{
+  width:48%;
+  padding-left:40px;
+  margin: auto;
+
+}
+.inside-right{
+  width:48%;
+  float:right;
+  margin: auto;
+  padding-right:40px;
+
+}
+hr{
+  border-top: 1px solid black;
+}
+.inside_left_detail{
+  background: #c1c1c1;;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.arround_inside_left{
+  height:200px;
+  border:1px solid black;
+}
+.bolded{
+  font-weight: bold;
+}
 button {
 background-color: #4CAF50; /* Green */
 border: none;
@@ -66,40 +98,6 @@ width:20%;
 
   </div>
   <center><h1>Confirm Flight</h1></center>
-  <style media="screen">
-  .confirmation_box{
-
-    margin: auto;
-  }
-  .inside-left{
-    width:48%;
-    padding-left:40px;
-    margin: auto;
-
-  }
-  .inside-right{
-    width:48%;
-    float:right;
-    margin: auto;
-    padding-right:40px;
-
-  }
-  hr{
-    border-top: 1px solid black;
-  }
-  .inside_left_detail{
-    background: #c1c1c1;;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-  .arround_inside_left{
-    height:200px;
-    border:1px solid black;
-  }
-  .bolded{
-    font-weight: bold;
-  }
-  </style>
   <div class="confirmation_box"style="height:320px;">
     <div class="inside-left" style="">
       <h2>Departing Flight</h2>
@@ -122,25 +120,9 @@ width:20%;
       </div>
     </div>
 
-
     <center><h1>Total Cost:<?php echo $_SESSION['price_1']?>$</h1></center>
 
 <center><button type="button" id = "restart" class = ""name="button">Restart</button></center>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </body>
+</body>
   </html>

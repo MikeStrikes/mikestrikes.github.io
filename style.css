@@ -7,7 +7,10 @@ width:100%;
 overflow: visible;
 background-image: url("images/banner.png");
 }
-
+.custom{
+  float: right;
+  height: 200px;
+}
 
 .title{
   float:left;

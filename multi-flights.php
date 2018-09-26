@@ -119,6 +119,7 @@ window.location.replace("index.php");
       <hr>
       <text style="font-weight:bold;font-size:20px;"><?php echo $_SESSION['saved-departure-date'.$x.'']."          "; ?>               </text><text style="font-weight:bold;font-size:20px;padding-left:80px;"> <?php echo $_SESSION['saved-departure-city'.$x.''] ?>,
          (<?php echo $_SESSION['saved-departure'.$x.''] ?>) - <?php echo $_SESSION['saved-arrival-city'.$x.''] ?>, (<?php echo $_SESSION['saved-destination'.$x.''] ?>)</text>
+         <text style="font-weight:bold;font-size:20px;padding-left:40px;"><?php echo $_SESSION['saved-airline'.$x.''] == "AC" ? 'Air Canada':  $_SESSION['saved-airline'.$x.'']?></text>
       <div class="arround_inside_left">
 
 

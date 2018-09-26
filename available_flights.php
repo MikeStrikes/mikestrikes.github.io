@@ -1,102 +1,12 @@
 <?php
 include 'airport_data.php';
+include 'functions.php';
 session_start();
 $goingthrough = false;
-$FlightTime;
 $picked;
 $flightHelper;
+var_dump($_SESSION);
 
-  function MatchCity($departure,$airports){
-
-    for($x = 0;$x<= count($airports) - 1;$x++){
-      if($airports[$x]['code'] == $departure){
-        return $airports[$x]['city'];
-      }
-    }
-
-  }
-
-  function MatchAirports($departure,$airports){
-
-    for($x = 0;$x<= count($airports) - 1;$x++){
-      if($airports[$x]['code'] == $departure){
-        return $airports[$x]['timezone'];
-      }
-    }
-
-  }
-  function MatchAirports2($destination,$airports){
-
-    for($x = 0;$x<= count($airports) - 1;$x++){
-      if($airports[$x]['code'] == $destination){
-        return $airports[$x]['timezone'];
-      }
-    }
-
-  }
-  function DepartureDate($departureDate,$timezone,$DestinationTimezone,$DepartTime,$ArrivalTime){
-    $date = date_create($departureDate, timezone_open($timezone));
-    $timediffrence1 = date_format($date, 'Y-m-d H:i:sP');
-    $Time_Diffrence_hours = substr($timediffrence1,-5,-3);
-    $Time_Diffrence_minutes = substr($timediffrence1,-2);
-    $time_diffrence_hours_and_minutes = $Time_Diffrence_hours."". $Time_Diffrence_minutes;
-    date_timezone_set($date, timezone_open($DestinationTimezone));
-    $timediffrence2= date_format($date, 'Y-m-d H:i:sP');
-    $Time_Diffrence2_hours = substr($timediffrence2,-5,-3);
-    $Time_Diffrence2_minutes = substr($timediffrence2,-2);
-    $time_diffrence_hours_and_minutes2 = $Time_Diffrence2_hours ."".$Time_Diffrence2_minutes;
-    if($time_diffrence_hours_and_minutes <= $time_diffrence_hours_and_minutes2){
-
-      $AddingHours = ($Time_Diffrence2_hours - $Time_Diffrence_hours);
-      // OK NOW GET THE DIFFRENCE OF BOTH LAND AND TAKE OFF TIMES AND ADD 3 HOURSE TO IT
-
-      $AddingMinutes = ($Time_Diffrence2_minutes - $Time_Diffrence_minutes);
-      $start = date_create('2015-01-26 '.$DepartTime.'');
-      $end = date_create('2015-01-26 '.$ArrivalTime.'');
-      $diff=date_diff($end,$start);
-
-
-      $date = new DateTime('2000-01-01 00:00:00');
-      $date->add(new DateInterval('PT'.$diff->h.'H'. $diff->i .'M'));
-      $date->add(new DateInterval('PT'.$AddingHours.'H'. $AddingMinutes .'M'));
-      $FullFlightTime = $date->format('Y-m-d H:i:s') . "\n";
-      $FlightTime;
-
-      if(substr($FullFlightTime,-9,1) == "0"){
-        $FlightTime = substr($FullFlightTime,-8);
-
-      }else{
-        $FlightTime= substr($FullFlightTime,-9);
-      }
-
-      echo $FlightTime;
-    }else {
-
-      $AddingHours = ( $Time_Diffrence_hours - $Time_Diffrence2_hours);
-      // OK NOW GET THE DIFFRENCE OF BOTH LAND AND TAKE OFF TIMES AND ADD 3 HOURSE TO IT
-
-      $AddingMinutes = ($Time_Diffrence_minutes- $Time_Diffrence2_minutes );
-      $start = date_create('2015-01-26 '.$DepartTime.'');
-      $end = date_create('2015-01-26 '.$ArrivalTime.'');
-      $diff=date_diff($end,$start);
-
-
-      $date = new DateTime('2000-01-01 00:00:00');
-      $date->add(new DateInterval('PT'.$diff->h.'H'. $diff->i .'M'));
-      $date->sub(new DateInterval('PT'.$AddingHours.'H'. $AddingMinutes .'M'));
-      $FullFlightTime = $date->format('Y-m-d H:i:s') . "\n";
-      $FlightTime;
-
-      if(substr($FullFlightTime,-9,1) == "0"){
-        $FlightTime = substr($FullFlightTime,-8);
-
-      }else{
-        $FlightTime= substr($FullFlightTime,-9);
-      }
-
-      echo $FlightTime;
-    }
-  }
 
   ?>
   <!DOCTYPE html>
@@ -111,10 +21,47 @@ $flightHelper;
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <link rel="stylesheet" href="style.css">
     <meta charset="utf-8">
+    <script type="text/javascript">
+    $(document).ready(function(){
+      $("#restart").on('click', function(){
+
+  window.location.replace("index.php");
+       });
+
+    });
+    </script>
   </head>
+  <style media="screen">
+  #available_flights {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #available_flights td, #available_flights th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #available_flights tr:nth-child(even){background-color: #f2f2f2;}
+
+  #available_flights tr:hover {background-color: #ddd;}
+
+  #available_flights th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+  }
+  .custom{
+    float: right;
+    height: 200px;
+  }
+
+  </style>
   <body style="background:#e8e8e8;">
     <div >
       <center><h1 style="font-size:52px;"><img src="images/logo.png" alt = "logo" style="vertical-align: middle;"/>Momentum Travel</h1></center>
@@ -128,36 +75,6 @@ $flightHelper;
       </div>
 
     </div>
-    <style media="screen">
-    #available_flights {
-      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    #available_flights td, #available_flights th {
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-
-    #available_flights tr:nth-child(even){background-color: #f2f2f2;}
-
-    #available_flights tr:hover {background-color: #ddd;}
-
-    #available_flights th {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      text-align: left;
-      background-color: #4CAF50;
-      color: white;
-    }
-    </style>
-
-    <?php
-    //diffrence + time zone diffrence
-
-
-    ?>
     <center><h1>Available Flights from <?php echo MatchCity($_GET['departure'],$airports); ?> to <?php echo MatchCity($_GET['destination'],$airports); ?></h1></center>
     <form class="" method="POST">
 
@@ -165,12 +82,45 @@ $flightHelper;
       <table style="width:50%;margin:auto;" id = "available_flights">
         <th>Selected</th><th>Airline</th><th>Flight #</th><th>Departure Time</th><th>Arrival Time</th><th>Departure Ariport</th><th>Arrival Airport</th><th>Price</th><th>Flight Time</th>
         <?php
+        $available_flights = 0;
         for($j = 0;$j<=count($flights)-1;$j++){
 
-          if($flights[$j]['departure_airport'] == $_GET['departure'] && $flights[$j]['arrival_airport'] == $_GET['destination'] ){
+          if($flights[$j]['departure_airport'] == $_GET['departure'] && $flights[$j]['arrival_airport'] == $_GET['destination']){
+            if(isset($_SESSION['filter'])){
+              if($flights[$j]['airline'] == $_SESSION['filter']){
+                $available_flights = $available_flights + 1;
+              $timezone = MatchAirports($flights[$j]['departure_airport'],$airports);
+              $timezone2= MatchAirports2($flights[$j]['arrival_airport'],$airports);
+
+
+              echo "<tr>";
+              echo "<td>
+
+
+              <center><input type='radio' name='send' value='".$flights[$j]['number']."'></center>
+
+              </td>";
+              echo "<td>".$flights[$j]['airline']."</td>";
+              echo "<td>".$flights[$j]['number']."</td>";
+              echo "<td>".$flights[$j]['departure_time']."</td>";
+              echo "<td>".$flights[$j]['arrival_time']."</td>";
+              echo "<td>".$flights[$j]['departure_airport']."</td>";
+              echo "<td>".$flights[$j]['arrival_airport']."</td>";
+              echo "<td>".$flights[$j]['price']."</td>";
+
+              echo "<td>";
+
+              ?><input type="hidden" name="<?php echo $flights[$j]['number']; ?>" id = "nocheck"value="<?php DepartureDate($_GET['departure_date'],$timezone,$timezone2,$flights[$j]['departure_time'],$flights[$j]['arrival_time']) ?>" ><?php
+
+              DepartureDate($_GET['departure_date'],$timezone,$timezone2,$flights[$j]['departure_time'],$flights[$j]['arrival_time']);
+              echo "</td>";
+              echo "</tr>";
+            }
+
+            }else{
             $timezone = MatchAirports($flights[$j]['departure_airport'],$airports);
             $timezone2= MatchAirports2($flights[$j]['arrival_airport'],$airports);
-
+            $available_flights = $available_flights + 1;
             echo "<tr>";
             echo "<td>
 
@@ -193,17 +143,13 @@ $flightHelper;
             DepartureDate($_GET['departure_date'],$timezone,$timezone2,$flights[$j]['departure_time'],$flights[$j]['arrival_time']);
             echo "</td>";
             echo "</tr>";
+          }
 
 
 
-            if($j == count($flights)-1){
-
-            }
-            $remember = $flights[$j]['number'];
           }
 
         }
-
 
 
         ?>
@@ -211,16 +157,17 @@ $flightHelper;
       </table>
       <?php   echo '<center><input type="submit" name="submit" value="submit"></center>'; ?>
     </form>
-    <?php
 
+    <?php
+    if($available_flights == 0){
+      echo "<center><h3>Looks like there's no flights...</h3></center>";
+      ?>
+<center><button type="button" id = "restart" class = ""name="button">Restart</button></center>
+      <?php
+    }
 
     ?>
-    <style media="screen">
-    .custom{
-      float: right;
-      height: 200px;
-    }
-    </style>
+
     <div class="modal fade" id="confirm_flight" role="dialog">
       <div class="modal-dialog">
 
@@ -290,7 +237,7 @@ echo $flights[$picked]['number'];
 
       </div>
     </div>
-    <?php echo $timezone; ?>
+
     <?php
 
     if(isset($_POST['submit']) && isset($_POST['send'])){
@@ -307,32 +254,11 @@ echo $flights[$picked]['number'];
       $_SESSION['number_1'] = $flights[$picked]['number'];
       $_SESSION['departure_time_1'] = $flights[$picked]['departure_time'];
       $_SESSION['arrival_time_1'] = $flights[$picked]['arrival_time'];
-
-
-
       ?>
       <script type="text/javascript"> $('#confirm_flight').modal('show'); </script>
       <?php
       $_POST = array();
     }
-
-    if(isset($_POST['submit2'])){
-
-    }
     ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </body>
+</body>
   </html>
